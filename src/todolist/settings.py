@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djoser',
     'core',
 ]
 
@@ -112,6 +114,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'core.serializers.UserRegistrationSerializer',
+        'current_user': 'core.serializers.CurrentUserSerializer',
+    },
+    # 'LOGIN_FIELD': 'username',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
