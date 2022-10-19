@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.7'
 
 services:
   postgres:
@@ -30,8 +30,7 @@ services:
     environment:
       POSTGRES_HOST: postgres
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     ports:
       - "8000:8000"
     volumes:
