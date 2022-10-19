@@ -42,8 +42,7 @@ jobs:
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
-          cat deploy/docker-compose-server.yaml | envsubst > deploy/tmp.docker-compose.yaml
-          mv deploy/tmp.docker-compose.yaml deploy/docker-compose-server.yaml
+          cat deploy/docker-compose-server.yaml | envsubst > deploy/docker-compose.yaml
       - name: Copy on server
         uses: appleboy/scp-action@master
         with:
@@ -61,5 +60,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd todolist
-            docker compose pull
-            docker compose up -d
+            docker-compose pull
+            docker-compose up -d
