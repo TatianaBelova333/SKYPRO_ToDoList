@@ -15,7 +15,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/final_work
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/final_work:latest
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -41,8 +41,8 @@ jobs:
       - name: Update compose
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        run:
-          envsubst '$DOCKER_HUB_USERNAME' < deploy/docker-compose-server.yaml > deploy/tmp.docker-compose.yaml
+        run: |
+          cat deploy/docker-compose-server.yaml | envsubst > deploy/tmp.docker-compose.yaml
           mv deploy/tmp.docker-compose.yaml deploy/docker-compose-server.yaml
       - name: Copy on server
         uses: appleboy/scp-action@master
