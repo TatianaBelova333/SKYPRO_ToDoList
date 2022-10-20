@@ -1,7 +1,8 @@
-version: '3.7'
+version: '3.8'
 
 services:
   postgres:
+    platform: linux/amd64
     image: postgres:14.0-alpine
     restart: always
     environment:
@@ -21,6 +22,7 @@ services:
       - backend_nw
 
   api:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -34,12 +36,13 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./scr:/opt/todolist
+      - scr:/opt/todolist
     networks:
       - backend_nw
       - frontend
 
   frontend:
+    platform: linux/amd64
     image: sermalenk/skypro-front:lesson-34
     restart: always
     depends_on:
@@ -48,8 +51,10 @@ services:
       - "80:80"
     networks:
       - frontend
-    volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      DOCKER_DEFAULT_PLATFORM: linux/amd6
+    # volumes:
+    #  - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   postgres_data:
