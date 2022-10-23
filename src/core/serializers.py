@@ -52,7 +52,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'email']
 
     def create(self, validated_data: dict):
         """Authenticate and log in user"""
