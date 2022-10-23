@@ -4,7 +4,7 @@ from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView,
 from rest_framework.response import Response
 
 from core.models import User
-from core.serializers import UserSignUpSerializer, UserLoginSerializer, UserProfileSerializer
+from core.serializers import UserSignUpSerializer, UserLoginSerializer, UserProfileSerializer, PasswordUpdateSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -16,13 +16,6 @@ class LoginView(CreateAPIView):
 
     def perform_create(self, serializer):
         login(request=self.request, user=serializer.save())
-"""
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        login(request=request, user=serializer.save())
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-"""
 
 
 class ProfileView(RetrieveUpdateDestroyAPIView):
@@ -39,8 +32,7 @@ class ProfileView(RetrieveUpdateDestroyAPIView):
 
 class PasswordUpdateView(UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UserProfileSerializer
+    serializer_class = PasswordUpdateSerializer
 
     def get_object(self) -> User:
         return self.request.user
-

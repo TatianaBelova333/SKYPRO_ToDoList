@@ -2,6 +2,7 @@ from pathlib import Path
 import environ
 import os
 
+from django.contrib import staticfiles
 
 env = environ.Env(
     # set casting, default value
@@ -19,7 +20,7 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-#&wh3g_-7tt6sy!a8y#o&y-(
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['*'])
 
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'todolist.urls'
@@ -109,17 +111,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-'''
-DJOSER = {
-    'SERIALIZERS': {
-        'user_create': 'core.serializers.UserRegistrationSerializer',
-        'current_user': 'core.serializers.CurrentUserSerializer',
-    },
-    # 'LOGIN_FIELD': 'username',
-}
-'''
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -135,6 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'core.User'
@@ -143,3 +135,21 @@ AUTH_USER_MODEL = 'core.User'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_JSONFIELD_CUSTOM = 'django.db.models.JSONField'
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('VK_OAUTH2_KEY', default='51455769')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('VK_OAUTH2_SECRET', default='jCAGBxSVQmEXmzE4geqi')
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_EXTRA_DATA = [
+    ('email', 'email'),
+]
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_USER_MODEL = 'core.User'
