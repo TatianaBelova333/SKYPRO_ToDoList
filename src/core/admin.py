@@ -21,20 +21,4 @@ class UserAdmin(BaseUserAdmin):
             'date_joined',
         )}),
     )
-"""
-    fieldsets = (
-        (None, {"fields": ("username",)}),
-        (
-            "Personal Info",
-            {'fields': ('first_name', 'last_name', 'email')}
-        ),
-        (
-            "Permissions",
-            {"fields": ("is_active", "is_staff")}
-        ),
-        (
-            "Important Dates",
-            {"fields": ('last_login', 'date_joined')}
-        )
-    )
-"""
+
