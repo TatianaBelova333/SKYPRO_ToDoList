@@ -32,13 +32,16 @@ class UserSignUpSerializer(serializers.ModelSerializer):
             'password_repeat',
         ]
 
-    def create(self, validated_data: dict):
-        """Create a new user if password and password_repeat match"""
-        password_repeat = validated_data.pop('password_repeat')
-        password = validated_data['password']
-
-        if password != password_repeat:
+    def validate(self, data: dict) -> dict:
+        """Check if password and password_repeat match"""
+        if data['password'] != data['password_repeat']:
             raise ValidationError({'password_repeat': 'Passwords must match.'})
+        return data
+
+    def create(self, validated_data: dict):
+        """Create a new user"""
+        del validated_data['password_repeat']
+        password = validated_data['password']
 
         user = User.objects.create(**validated_data)
         user.set_password(password)
