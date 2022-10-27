@@ -43,7 +43,7 @@ services:
 
   frontend:
     platform: linux/amd64
-    image: sermalenk/skypro-front:lesson-35
+    image: sermalenk/skypro-front:lesson-36
     restart: always
     depends_on:
       - api
