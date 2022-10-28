@@ -49,8 +49,6 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, category: GoalCategory):
         """Change the category is_deleted status to False instead of deleting"""
         category.is_deleted = True
-        for goal in category.goals.all():
-            goal.status = Status.archived
-            goal.save()
         category.save()
+        category.goals.all().update(status=Status.archived)
         return category

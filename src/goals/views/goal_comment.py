@@ -18,7 +18,7 @@ class GoalCommentListView(ListAPIView):
     ordering = ["-created"]
 
     def get_queryset(self):
-        """Return queryset with goal categories filtered by current user and is_deleted status"""
+        """Return queryset with goal comments filtered by current user"""
         goal = self.request.query_params.get('goal')
         return GoalComment.objects.filter(user=self.request.user, goal=goal)
 

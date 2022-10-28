@@ -1,4 +1,4 @@
-from .dates import DatesModelMixin
+from .basemixin import DatesModelMixin
 from .goal_category import GoalCategory
 from .goal import Goal
 from .goal_comment import GoalComment

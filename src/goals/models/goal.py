@@ -1,5 +1,4 @@
 from django.db import models
-
 from core.models import User
 from goals.models import GoalCategory, DatesModelMixin
 
