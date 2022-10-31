@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import User
-from goals.models import GoalCategory, DatesModelMixin
+from goals.models.goal_category import GoalCategory
+from goals.models.basemixin import DatesModelMixin
 
 
 class Status(models.IntegerChoices):

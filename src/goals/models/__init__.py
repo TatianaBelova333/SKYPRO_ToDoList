@@ -1,12 +1,6 @@
-from .basemixin import DatesModelMixin
-from .goal_category import GoalCategory
-from .goal import Goal
-from .goal_comment import GoalComment
-
-
-__all__ = [
-    'DatesModelMixin',
-    "GoalCategory",
-    'Goal',
-    'GoalComment',
-]
+from .basemixin import *
+from .board import *
+from .board_participant import *
+from .goal import *
+from .goal_category import *
+from .goal_comment import *

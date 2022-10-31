@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from core.serializers import UserProfileSerializer
-from goals.models import Goal, GoalCategory
+from goals.models.goal import Goal
+from goals.models.goal_category import GoalCategory
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):
@@ -15,10 +16,6 @@ class GoalCreateSerializer(serializers.ModelSerializer):
     def validate_category(self, category: GoalCategory):
         if category.is_deleted:
             raise serializers.ValidationError("not allowed in deleted category")
-
-        if category.user != self.context["request"].user:
-            raise serializers.ValidationError("not owner of category")
-
         return category
 
 
