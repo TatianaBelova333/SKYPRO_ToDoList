@@ -1,6 +1,7 @@
 from rest_framework import permissions, filters
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
-from goals.models import GoalComment
+from goals.models.goal_comment import GoalComment
+from goals.permissions import CommentsPermissions
 from goals.serializers import GoalCommentCreateSerializer
 from goals.serializers import GoalCommentSerializer
 
@@ -18,15 +19,15 @@ class GoalCommentListView(ListAPIView):
     ordering = ["-created"]
 
     def get_queryset(self):
-        """Return queryset with goal comments filtered by current user"""
+        """Return queryset with goal comments"""
         goal = self.request.query_params.get('goal')
-        return GoalComment.objects.filter(user=self.request.user, goal=goal)
+        return GoalComment.objects.filter(goal=goal)
 
 
 class GoalCommentCreateView(CreateAPIView):
     """Create a new comment to the goal"""
     model = GoalComment
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, CommentsPermissions]
     serializer_class = GoalCommentCreateSerializer
 
 

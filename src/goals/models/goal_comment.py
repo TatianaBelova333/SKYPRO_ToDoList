@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import User
-from goals.models import DatesModelMixin, Goal
+from goals.models.basemixin import DatesModelMixin
+from goals.models.goal import Goal
 
 
 class GoalComment(DatesModelMixin):

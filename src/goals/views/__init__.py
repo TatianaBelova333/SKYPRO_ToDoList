@@ -1,6 +1,7 @@
 from .goal_category import GoalCategoryCreateView, GoalCategoryListView, GoalCategoryView
 from .goal import GoalCreateView, GoalListView, GoalView
 from .goal_comment import GoalCommentCreateView, GoalCommentListView, GoalCommentView
+from .board import BoardView, BoardListView, BoardCreateView
 
 
 __all__ = [
@@ -13,4 +14,7 @@ __all__ = [
     "GoalCommentCreateView",
     "GoalCommentListView",
     "GoalCommentView",
+    "BoardView",
+    "BoardListView",
+    "BoardCreateView",
 ]
