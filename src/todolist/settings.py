@@ -4,13 +4,14 @@ import os
 
 from django.contrib import staticfiles
 
+
 env = environ.Env(
-    # set casting, default value
     DEBUG=(bool, False)
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(BASE_DIR.joinpath('.env'))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'social_django',
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +158,5 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [
 ]
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_USER_MODEL = 'core.User'
+
+TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN', default="5728255489:AAH21mfYsuvp3YANrzH1pkSkwt1xXrnONDc")
