@@ -42,10 +42,7 @@ services:
       - frontend
 
   bot:
-    platform: linux/amd64
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME}/final_work:latest
     restart: always
     env_file:
       - ./.env
