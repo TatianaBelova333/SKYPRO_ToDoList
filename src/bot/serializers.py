@@ -13,7 +13,7 @@ class TgUserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, data: dict):
-        verification_code = data.get('verification_code')
+        verification_code = data['verification_code']
         tg_user = TgUser.objects.filter(verification_code=verification_code)
         if not tg_user:
             raise serializers.ValidationError("Incorrect verification code")

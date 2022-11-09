@@ -41,10 +41,13 @@ class TgClient:
     def tg_user_exists(self, tg_user_id: int) -> bool:
         return self.tg_user.objects.filter(tg_user_id=tg_user_id).exists()
 
-    def tg_user_verified(self, tg_user_id: int) -> bool:
+    def tg_user_is_verified(self, tg_user_id: int) -> bool:
         if self.tg_user_exists(tg_user_id):
             return self.tg_user.objects.get(tg_user_id=tg_user_id).is_verified
         return False
+
+    def new_or_unverified_tg_user(self, tg_user_id: int) -> bool:
+        return not self.tg_user_exists(tg_user_id) or not self.tg_user_is_verified(tg_user_id)
 
     def create_new_tg_user(self, tg_user_id, chat_id, verification_code):
         self.tg_user.objects.create(
@@ -53,7 +56,7 @@ class TgClient:
             verification_code=verification_code
         )
 
-    def update_tg_user(self, tg_user_id, verification_code):
+    def update_verification_code(self, tg_user_id, verification_code):
         tg_user = self.tg_user.objects.get(tg_user_id=tg_user_id)
         tg_user.verification_code = verification_code
         tg_user.save()
@@ -91,3 +94,16 @@ class TgClient:
             title=goal_title,
             user=tg_user.user,
         )
+
+    def handle_new_or_unverified_user(self, chat_id, tg_user_id):
+        if self.new_or_unverified_tg_user(tg_user_id):
+            verification_code = self.generate_verification_code()
+            self.send_verification_code(chat_id=chat_id, verification_code=verification_code)
+            if not self.tg_user_exists(tg_user_id=tg_user_id):
+                self.create_new_tg_user(
+                    tg_user_id=tg_user_id,
+                    chat_id=chat_id,
+                    verification_code=verification_code
+                )
+            elif not self.tg_user_is_verified(tg_user_id=tg_user_id):
+                self.update_verification_code(tg_user_id=tg_user_id, verification_code=verification_code)

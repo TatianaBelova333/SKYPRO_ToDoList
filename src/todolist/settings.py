@@ -17,11 +17,11 @@ environ.Env.read_env(BASE_DIR.joinpath('.env'))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-#&wh3g_-7tt6sy!a8y#o&y-(q9)%=p)m&29c((o3i%tyf7lq&z')
+SECRET_KEY = env('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG', default=True)
+DEBUG = env('DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['*'])
 
@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'todolist.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": 'django.db.backends.postgresql',
-        "NAME": env('POSTGRES_DB', default='todolist'),
-        "USER": env('POSTGRES_USER', default='tatiana'),
-        "PASSWORD": env("POSTGRES_PASSWORD", default='skypro1234'),
+        "NAME": env('POSTGRES_DB', default='postgres'),
+        "USER": env('POSTGRES_USER', default='postgres'),
+        "PASSWORD": env("POSTGRES_PASSWORD", default='postgres'),
         "HOST": env('POSTGRES_HOST', default='127.0.0.1'),
         "PORT": "5432",
     }
@@ -143,8 +143,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_JSONFIELD_CUSTOM = 'django.db.models.JSONField'
-SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('VK_OAUTH2_KEY', default='51455769')
-SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('VK_OAUTH2_SECRET', default='jCAGBxSVQmEXmzE4geqi')
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('VK_OAUTH2_SECRET')
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -159,4 +159,4 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_USER_MODEL = 'core.User'
 
-TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN', default="5728255489:AAH21mfYsuvp3YANrzH1pkSkwt1xXrnONDc")
+TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
