@@ -47,7 +47,6 @@ services:
     env_file:
       - ./.env
     environment:
-      TELEGRAM_TOKEN: ${TELEGRAM_BOT_TOKEN}
       POSTGRES_HOST: postgres
     command: python manage.py runbot
     depends_on:
