@@ -15,7 +15,6 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-dev --no-ansi --no-root
 
 COPY src/ ./
-# COPY docker-entrypoint.sh ./entrypoint.sh
 
 USER api
 
@@ -24,5 +23,3 @@ ENTRYPOINT ["bash", "docker-entrypoint.sh"]
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 EXPOSE 8000
-
-# --platform=linux/amd64

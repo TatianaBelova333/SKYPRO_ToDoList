@@ -19,5 +19,4 @@ urlpatterns = [
     path("board/<int:pk>", views.BoardView.as_view(), name='retrieve_update_delete_board'),
     path("board/list", views.BoardListView.as_view(), name='list_boards'),
     path("board/create", views.BoardCreateView.as_view(), name='create_board')
-
 ]
