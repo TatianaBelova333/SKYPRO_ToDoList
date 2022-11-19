@@ -5,6 +5,8 @@ from goals.models.board import Board
 
 
 class GoalCategory(DatesModelMixin):
+    """Goal category db model class."""
+
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"

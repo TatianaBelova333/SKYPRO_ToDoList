@@ -5,6 +5,8 @@ from goals.models.basemixin import DatesModelMixin
 
 
 class Status(models.IntegerChoices):
+    """Goal status class."""
+
     to_do = 1, "К выполнению"
     in_progress = 2, "В процессе"
     done = 3, "Выполнено"
@@ -12,6 +14,8 @@ class Status(models.IntegerChoices):
 
 
 class Priority(models.IntegerChoices):
+    """Goal priority db model class."""
+
     low = 1, "Низкий"
     medium = 2, "Средний"
     high = 3, "Высокий"
@@ -19,6 +23,8 @@ class Priority(models.IntegerChoices):
 
 
 class Goal(DatesModelMixin):
+    """Goal db model class."""
+
     class Meta:
         verbose_name = "Цель"
         verbose_name_plural = "Цели"

@@ -2,6 +2,8 @@ from django.db import models
 
 
 class DatesModelMixin(models.Model):
+    """Abstract class for created/updated db model fields"""
+
     class Meta:
         abstract = True
 

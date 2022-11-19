@@ -1,3 +1,5 @@
+from typing import NoReturn
+
 from bot.models import TgUser
 from bot.tg.client import TgClient
 from django.core.management.base import BaseCommand
@@ -5,12 +7,29 @@ from todolist.settings import TELEGRAM_BOT_TOKEN
 
 
 class Command(BaseCommand):
-    help = 'Receives telegram bot notifications and sends notifications text to user'
+    """Handles telegram bot notifications.
+
+    Attributes:
+        chosen_goal_category (:obj:`str`, optional): Goal category title sent by telegram user. Defaults to None.
+        create_command_used (bool): True if `/create` command has been sent telegram user. Defaults to False.
+        standard_bot_commands (:obj:`list` of :obj:`str`): List of available telegram bot commands.
+    """
     chosen_goal_category = None
     create_command_used = False
-    bot_commands = ['/goals', '/create', '/cancel']
+    standard_bot_commands = ['/goals', '/create', '/cancel']
 
-    def _process_standard_commands(self, tg_client, user_message, tg_user_id, chat_id):
+    def _process_standard_commands(self, tg_client: TgClient, user_message: str, tg_user_id: int,chat_id: int) -> NoReturn:
+        """Handles standard telegram bot commands sent by telegram user to the bot.
+
+        Args:
+            tg_client (:obj: `TgClient instance`): TgClient instance.
+            user_message (str): The text of a telegram user's message.
+            tg_user_id (int): Telegram user id.
+            chat_id (int): Telegram chat id.
+
+        Returns:
+            None.
+        """
         if user_message == '/goals':
             tg_client.send_user_goals(tg_user_id=tg_user_id, chat_id=chat_id)
         elif user_message == '/create':
@@ -21,7 +40,18 @@ class Command(BaseCommand):
             self.create_command_used = False
             tg_client.send_message(chat_id=chat_id, text=f'Your request has been cancelled')
 
-    def _process_other_commands(self, tg_client, user_message, tg_user_id, chat_id):
+    def _process_other_commands(self, tg_client: TgClient, user_message: str, tg_user_id: int, chat_id: int) -> NoReturn:
+        """Handles non-standard telegram bot commands sent by telegram user to the bot.
+
+        Args:
+            tg_client (:obj: `TgClient instance`): TgClient instance.
+            user_message (str): The text of a telegram user's message.
+            tg_user_id (int): Telegram user id.
+            chat_id (int): Telegram chat id.
+
+        Returns:
+            None.
+        """
         if self.create_command_used and user_message in (tg_client.get_user_categories(tg_user_id=tg_user_id)):
             self.chosen_goal_category = user_message
             tg_client.send_message(chat_id=chat_id, text='Please enter the title of a new goal')
@@ -37,7 +67,9 @@ class Command(BaseCommand):
         else:
             tg_client.send_message(chat_id=chat_id, text='Unknown command.Please try again.')
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> NoReturn:
+        """Receives telegram bot notifications and sends response to telegram user."""
+
         offset = 0
         tg_client = TgClient(token=TELEGRAM_BOT_TOKEN, tg_user=TgUser)
         while True:
@@ -53,7 +85,7 @@ class Command(BaseCommand):
                     else:
                         user_message = item.message.text
 
-                        if user_message in self.bot_commands:
+                        if user_message in self.standard_bot_commands:
                             self._process_standard_commands(tg_client, user_message, tg_user_id, chat_id)
                         else:
                             self._process_other_commands(tg_client, user_message, tg_user_id, chat_id)

@@ -3,6 +3,8 @@ from goals.models.basemixin import DatesModelMixin
 
 
 class Board(DatesModelMixin):
+    """Board db model class."""
+
     class Meta:
         verbose_name = "Доска"
         verbose_name_plural = "Доски"

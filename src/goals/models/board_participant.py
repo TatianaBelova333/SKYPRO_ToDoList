@@ -1,17 +1,20 @@
 from django.db import models
-
 from core.models import User
 from goals.models.basemixin import DatesModelMixin
 from goals.models.board import Board
 
 
 class BoardParticipant(DatesModelMixin):
+    """Board participant object class."""
+
     class Meta:
         unique_together = ("board", "user")
         verbose_name = "Участник"
         verbose_name_plural = "Участники"
 
     class Role(models.IntegerChoices):
+        """Board participant role class."""
+
         owner = 1, "Владелец"
         writer = 2, "Редактор"
         reader = 3, "Читатель"

@@ -5,26 +5,44 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView, C
 from goals.models import Board, Goal, Status
 from goals.permissions import BoardPermissions
 from goals.serializers import BoardSerializer, BoardCreateSerializer
+from django.db.models import QuerySet
 
 
 class BoardCreateView(CreateAPIView):
-    """Create a new board"""
+    """Create a new Board instance"""
+
     model = Goal
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = BoardCreateSerializer
 
 
 class BoardView(RetrieveUpdateDestroyAPIView):
+    """Board Retrieve/Update/Destroy APIView
+
+    get:
+    Return the given Board instance.
+
+    put:
+    Update the given Board instance.
+
+    patch:
+    Partially update the given Board instance.
+
+    delete:
+    Update the is_deleted field of the given Board instance to True.
+    """
+
     model = Board
     permission_classes = [permissions.IsAuthenticated, BoardPermissions]
     serializer_class = BoardSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Board]:
+        """Return queryset of the boards to which the current user has access as a board participant"""
         return Board.objects.filter(participants__user=self.request.user, is_deleted=False)
 
     def perform_destroy(self, board: Board):
-        """Change the is_deleted fields of the board and board categories to True, as well as the status field of the
-        board goals to False instead of their permanent deletion"""
+        """Update the is_deleted field of the given Board instance and related Board Categories to True, as well as
+        the status field of the related Category Goals to archived"""
         with transaction.atomic():
             board.is_deleted = True
             board.save()
@@ -36,7 +54,8 @@ class BoardView(RetrieveUpdateDestroyAPIView):
 
 
 class BoardListView(ListAPIView):
-    """Return a list of the boards available to the current user"""
+    """Return a list of the Board instances to which the current user has access as a board participant"""
+
     model = Board
     serializer_class = BoardSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -47,6 +66,6 @@ class BoardListView(ListAPIView):
     ordering_fields = ["title", "created", "updated"]
     search_fields = ["title"]
 
-    def get_queryset(self):
-        """Return queryset with boards filtered by current user"""
+    def get_queryset(self) -> QuerySet[Board]:
+        """Return queryset of the boards to which the current user has access as a board participant"""
         return Board.objects.filter(participants__user=self.request.user, is_deleted=False)

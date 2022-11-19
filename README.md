@@ -1,6 +1,6 @@
 # ToDoList
 ___
-**ToDoList** is a web application designed for creating and managing objectives.
+**ToDoList** is a web application designed for creating and managing objectives and sharing them with other users.
 The application has the following functions:
 1. Registration/login/authentication via vk.com.
 
@@ -20,9 +20,8 @@ The application has the following functions:
 
 5. Searching for the objective by its name.
 6. Filtering objectives by their status, category, priority, year, etc.
-7. Exporting data as csv/json.
-8. Adding notes for the objective.
-9. All the above functions must be realised in the mobile application.
+7. Adding notes for the objective.
+8. 
 ___
 ### Requirements & Compatibility
 ___

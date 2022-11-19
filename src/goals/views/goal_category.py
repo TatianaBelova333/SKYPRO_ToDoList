@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters
@@ -11,14 +12,16 @@ from goals.serializers import GoalCategorySerializer, GoalCategoryCreateSerializ
 
 
 class GoalCategoryCreateView(CreateAPIView):
-    """Create a new goal category"""
+    """Create a new GoalCategory instance."""
+
     model = GoalCategory
-    permission_classes = [permissions.IsAuthenticated, CategoryPermissions]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategoryCreateSerializer
 
 
 class GoalCategoryListView(ListAPIView):
-    """Return a list of all current user's active goal categories"""
+    """Return a list of all the GoalCategory instances to which the current user has access as a board participant."""
+
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategorySerializer
@@ -33,8 +36,10 @@ class GoalCategoryListView(ListAPIView):
     ordering = ["title"]
     search_fields = ["title"]
 
-    def get_queryset(self):
-        """Return queryset with goal categories filtered by current user and is_deleted status"""
+    def get_queryset(self) -> QuerySet[GoalCategory]:
+        """Return a list of all the GoalCategory instances with False is_deleted field to which the current user has
+        access as a board participant."""
+
         user = self.request.user
         board = self.request.query_params.get('board')
         if board:
@@ -50,18 +55,32 @@ class GoalCategoryListView(ListAPIView):
 
 
 class GoalCategoryView(RetrieveUpdateDestroyAPIView):
-    """Return, update and archive current user's goal categories"""
+    """GoalCategory Retrieve/Update/Destroy APIView
+
+    get:
+    Return the given GoalCategory instance.
+
+    put:
+    Update the given oalCategory instance.
+
+    patch:
+    Partially update the given oalCategory instance.
+
+    delete:
+    Update the is_deleted field of the given GoalCategory instance to True.
+    """
 
     model = GoalCategory
     serializer_class = GoalCategorySerializer
     permission_classes = [permissions.IsAuthenticated, CategoryPermissions]
 
-    def get_queryset(self):
-        """Return queryset with goal categories filtered by current user and is_deleted status"""
+    def get_queryset(self) -> QuerySet[GoalCategory]:
+        """Return a list of all the GoalCategory instances with False is_deleted field to which the current user has
+        access as a board participant."""
         return GoalCategory.objects.filter(board__participants__user=self.request.user, is_deleted=False)
 
-    def perform_destroy(self, category: GoalCategory):
-        """Change the category is_deleted status to False instead of deleting"""
+    def perform_destroy(self, category: GoalCategory) -> GoalCategory:
+        """Update the is_deleted fields of the given GoalCategory instance and related Goal instances to True."""
         with transaction.atomic():
             category.is_deleted = True
             category.save()

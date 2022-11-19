@@ -5,6 +5,8 @@ from goals.models.goal import Goal
 
 
 class GoalComment(DatesModelMixin):
+    """Goal comment db model class."""
+
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
