@@ -52,6 +52,6 @@ Set the following default values in your .env file.
 * VK_OAUTH2_SECRET 
 * TELEGRAM_BOT_TOKEN
 
-Run command docker compose up --build -d.
+Run command `docker compose up --build -d`
 
 
