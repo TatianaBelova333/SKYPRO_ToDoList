@@ -1,5 +1,6 @@
 import pytest
 from goals.models import Goal, BoardParticipant, Board, GoalCategory
+
 from tests.factories import UserFactory, CategoryFactory, BoardParticipantFactory, GoalFactory, \
     CommentFactory, BoardFactory
 
